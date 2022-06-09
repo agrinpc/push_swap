@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 16:06:21 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/09 12:08:27 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/06/09 14:33:12 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,15 @@ void	sa(int *a)
 	a[1] = tmp;
 }
 
+void	sb(int *b, int size)
+{
+	int	tmp;
+
+	tmp = b[size - 1];
+	b[size - 1] = b[size - 2];
+	b[size - 2] = tmp;
+}
+
 int	pa(int *a, int *b, int start)
 {
 	b[start] = a[start];
@@ -35,7 +44,7 @@ int	pb(int *b, int *a, int start)
 	return (start--);
 }
 
-void	ra(int *a, int start, int size)
+void	rra(int *a, int start, int size)
 {
 	int	i;
 	int	tmp;
@@ -47,7 +56,19 @@ void	ra(int *a, int start, int size)
 	a[start] = tmp;
 }
 
-void	rra(int *a, int start, int size)
+void	rb(int *b, int start, int size)
+{
+	int	i;
+	int	tmp;
+
+	i = size;
+	tmp = b[size - 1];
+	while (--i > start)
+		b[i] = b[i - 1];
+	b[start] = tmp;
+}
+
+void	ra(int *a, int start, int size)
 {
 	int	i;
 	int tmp;
@@ -57,6 +78,18 @@ void	rra(int *a, int start, int size)
 	while (++i < size - 1)
 		a[i] = a[i + 1];
 	a[size - 1] = tmp;
+}
+
+void	rrb(int *b, int start, int size)
+{
+	int	i;
+	int tmp;
+	
+	i = start - 1;
+	tmp = b[start];
+	while (++i < size - 1)
+		b[i] = b[i + 1];
+	b[size - 1] = tmp;
 }
 
 void	print_a(int *a, int size)
