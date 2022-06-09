@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 16:06:21 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/09 02:04:53 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/06/09 12:08:27 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,32 @@
 #include <stdlib.h>
 #define ROWS 2
 
-void	sa(int  *a)
+void	sa(int *a)
 {
-    int tmp;
-	
+	int	tmp;
+
 	tmp = a[0];
 	a[0] = a[1];
 	a[1] = tmp;
 }
 
-int	pa(int  *a, int *b, int start)
+int	pa(int *a, int *b, int start)
 {
-    b[start] = a[start];
+	b[start] = a[start];
 	return (start++);
 }
 
-int	pb(int  *b, int *a, int start)
+int	pb(int *b, int *a, int start)
 {
-    a[start - 1] = b[start];
+	a[start - 1] = b[start];
 	return (start--);
 }
 
 void	ra(int *a, int start, int size)
 {
 	int	i;
-	int tmp;
-	
+	int	tmp;
+
 	i = size;
 	tmp = a[size - 1];
 	while (--i > start)
@@ -61,7 +61,7 @@ void	rra(int *a, int start, int size)
 
 void	print_a(int *a, int size)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	printf("\n\n *********************************** \n");
@@ -71,10 +71,10 @@ void	print_a(int *a, int size)
 
 int	get_small_elm(int *a, int size, int start)
 {
-	int sm;
-	int *tmp;
+	int	sm;
+	int	*tmp;
 	int	i;
-	int max;
+	int	max;
 
 	i = 0;
 	max = 0;
@@ -100,11 +100,11 @@ int	is_odd(int num)
 	return (0);
 }
 
-int do_it (int *a, int *b, int start, int size)
+int do_it(int *a, int *b, int start, int size)
 {
 	int	max;
 	int	i;
-	
+
 	i = -1;
 	max = get_small_elm(a, size, start);
 	// printf("max is %d\n", max);
@@ -112,7 +112,7 @@ int do_it (int *a, int *b, int start, int size)
 		while (++i < max / 2)
 			rra(a, start, size);
 	else
-		while (++i <  max / 2 + 1)
+		while (++i < max / 2 + 1)
 			rra(a, start, size);
 	pa(a, b, start);
 	// print_a(a, size);
@@ -139,9 +139,9 @@ void	sort_b(int *b, int size)
 
 void	push_swap(int *a, int size)
 {
-	int *b;
-	int max;
-	int start;
+	int	*b;
+	int	max;
+	int	start;
 	int	i;
 
 	start = 0;
