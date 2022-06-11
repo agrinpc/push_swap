@@ -21,7 +21,7 @@ void	sa(int *a, int start)
 	tmp = a[start];
 	a[start] = a[start + 1];
 	a[start + 1] = tmp;
-	// printf("sa\n");
+	printf("sa\n");
 }
 
 void	sb(int *b, int size)
@@ -31,19 +31,19 @@ void	sb(int *b, int size)
 	tmp = b[size - 1];
 	b[size - 1] = b[size - 2];
 	b[size - 2] = tmp;
-	// printf("sb\n");
+	printf("sb\n");
 }
 
 void	pa(int *a, int *b, int start)
 {
 	b[start] = a[start];
-	// printf("pa\n");
+	printf("pa\n");
 }
 
 void	pb(int *b, int *a, int start)
 {
-	a[start - 1] = b[start];
-	// printf("pb\n");
+	a[start] = b[start];
+	printf("pb\n");
 }
 
 void	rra(int *a, int start, int size)
@@ -56,7 +56,7 @@ void	rra(int *a, int start, int size)
 	while (--i > start)
 		a[i] = a[i - 1];
 	a[start] = tmp;
-	// printf("rra\n");
+	printf("rra\n");
 }
 
 void	rb(int *b, int start, int size)
@@ -69,7 +69,7 @@ void	rb(int *b, int start, int size)
 	while (--i > start)
 		b[i] = b[i - 1];
 	b[start] = tmp;
-	// printf("rb\n");
+	printf("rb\n");
 }
 
 void	ra(int *a, int start, int size)
@@ -82,7 +82,7 @@ void	ra(int *a, int start, int size)
 	while (++i < size - 1)
 		a[i] = a[i + 1];
 	a[size - 1] = tmp;
-	// printf("ra\n");
+	printf("ra\n");
 }
 
 void	rrb(int *b, int start, int size)
@@ -95,7 +95,7 @@ void	rrb(int *b, int start, int size)
 	while (++i < size - 1)
 		b[i] = b[i + 1];
 	b[size - 1] = tmp;
-	// printf("rrb\n");
+	printf("rrb\n");
 }
 
 void	print_a(int *a, int start, int size)
@@ -103,9 +103,10 @@ void	print_a(int *a, int start, int size)
 	int	i;
 
 	i = start - 1;
-	printf("\n\n *********************************** \n");
+	// printf("\n\n *********************************** \n");
 	while (++i < size)
 		printf("%d\n", a[i]);
+	printf("*********************\n");
 }
 
 int	get_b_index(int *b, int val, int size)
@@ -113,41 +114,56 @@ int	get_b_index(int *b, int val, int size)
 	int i;
 
 	i = -1;
-	while (++i < size)
+	while (++i < size - 1)
 	{
-		if (val < b[i + 1] && val > b[i])
-			return (i);
+		if (val > b[i])
+			if (val < b[i + 1] || b[i + 1] < b[i])
+				return (i + 1);
+		if (val < b[i + 1] && b[i + 1] < b[i] )
+				return (i + 1);
 	}
-	
-	return (i);
+	return (size);
 }
 
-void sort_b(int *b, int size, int i)
+void sort_b_r(int *b, int size, int i)
 {
 	int j;
 
+	// printf("\nsize = %d, j = %d\n", size, i);
+	if (size < 2)
+		return ;
 	if (i > 0)
 	{
 		if (i > size / 2)
 		{
 			j = i;
 			while (++j < size)
-				rrb(b, 0, size);
-			sb(b, size);
-			j = i;
-			while (++j < size)
 				rb(b, 0, size);
 		}
 		else
 		{
-			j = 0;
-			while (++j < i)
-				rb(b, 0, size);
-			sb(b, size);
-			j = i;
+			j = -1;
 			while (++j < i)
 				rrb(b, 0, size);
 		}
+	}
+}
+
+void sort_b(int *b, int size, int i)
+{
+	int j;
+
+	if (size < 2)
+		return ;
+	if (i > 0)
+	{
+		j = -1;
+		if (size - i < size / 2)
+			while (++j < size - i)
+				rb(b, 0, size);
+		else
+			while (++j < i)
+				rrb(b, 0, size);
 	}
 }
 
@@ -190,36 +206,57 @@ int do_it(int *a, int *b, int start, int size)
 
 	i = -1;
 	max = get_small_elm(a, size, start);
-	printf("\nmax = %d\n", max);
-	// printf("max is %d\n", max);
+	// printf("\nmax = %d\n", max);
 	if (is_odd(max))
 		while (++i < max / 2)
 			ra(a, start, size);
 	else
 		while (++i < max / 2 + 1)
 			rra(a, start, size);
-	printf("\na0 = %d\n", a[start]);
+	// printf("\na0 = %d\n", a[start]);
+	// printf("\n start = %d\n", start);
 	j = get_b_index(b, a[start], start);
-	printf("\n j = %d\n", j);
+	// printf("\n j = %d\n", j);
+	// printf("\nFIRST B, J = %d, start = %d\n", j, start);
+	// print_a(b, 0, start);
 	sort_b(b, start, j);
+	// printf("\nSECOND B\n");
+	// print_a(b, 0, start);
 	pa(a, b, start);
+	start++;
+	// printf("\nTHIRD B\n");
+	// print_a(b, 0, start);
 	// cond(b, a, 0, start);
 	// printf("\n b ");
 }
 
-void do_2(int *a, int start)
+void	finalize_b(int *b, int start)
+{
+	int	i;
+	int	max;
+
+	max = 0;
+	i = 0;
+	while (++i < start)
+		if (b[i] > b[max])
+			max = i;
+	max++;
+	sort_b(b, start, max);
+}
+
+void	do_2(int *a, int start)
 {
 	if (a[start] > a[start + 1])
 		sa(a, start);
 }
 
-void do_3(int *a, int start)
+void	do_3(int *a, int start)
 {
 	if (a[start] > a[start + 1])
 		sa(a, start);
 	if (a[start] > a[start + 2])
 		ra(a, start, start + 3);
-	if (a[1] > a[2])
+	if (a[start + 1] > a[start + 2])
 	{
 		ra(a, start, start + 3);
 		sa(a, start);
@@ -227,7 +264,7 @@ void do_3(int *a, int start)
 	}
 }
 
-int cond(int *a, int *b, int start, int size)
+int	cond(int *a, int *b, int start, int size)
 {
 	int	i;
 
@@ -238,15 +275,18 @@ int cond(int *a, int *b, int start, int size)
 		do_2(a, start);
 	else if (size < 4)
 		do_3(a, start);
-	else if (start < size - 1)
+	else if (start < size - 3)
 	{
 		do_it(a, b, start, size);
 		start++;
-		print_a(b, 0, start);
+		// print_a(b, 0, start);
 		start = cond(a, b, start, size);
 	} else {
+		finalize_b(b, start);
+		// printf("\nstart = %d, a[%d] = %d, a[%d] = %d, a[%d] = %d\n", start, start, a[start], start + 1, a[start + 1], start + 2, a[start + 2]);
+		do_3(a, start);
 		while (++i < start)
-			pa(b, a, i);
+			pb(b, a, i);
 		start = 0;
 	}
 	return (start);
@@ -261,17 +301,18 @@ void	push_swap(int *a, int size)
 
 	start = 0;
 	i = -1;
-	print_a(a, start, size);
+	// print_a(a, start, size);
 	b = malloc(size * sizeof(int));
 	start = cond(a, b, start, size);
-	print_a(b, 0, size);
-	print_a(a, start, size);
+	// print_a(b, 0, size);
+	// print_a(a, start, size);
 }
 
 int main()
 {
-	int	size = 4;
-	int	a[4] = {-122, -20, 125, -50};
+	int	size = 6;
+	int	a[6] = {7, -122, -20, 125, -50, 18};
+	// , 19, 0, 75, -555, 126, 1000, -1000, 117, -236, 233, 234, -133, 528, -99999, 999999, -19};
 	// , 0, 18, -1000, 10, 126, -19, 999, -1236, -156, 732, 199};
 
 	push_swap(a, size);
