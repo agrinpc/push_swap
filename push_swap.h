@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:38:44 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/14 18:19:41 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:46:13 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,13 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# define RAT 1
 
-int		return_b_r(int *b, int size, int i);
+# define RAT 1
+# define S_START 0
+# define S_SIZE 1
+# define S_TG 2
+
+int		return_b_r(int size, int i);
 int		get_rr_rrr(int max, int val, int *b, int start);
 int		is_odd(int num);
 void	sa(int *a, int start);

@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 16:06:21 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/14 18:16:23 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/06/17 20:23:24 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	get_rows(int size)
 {
 	if (size < 13)
-		return (3);
+		return (2);
 	if (size < 100)
-		return (6);
+		return (5);
 	if (size < 300)
 		return (10);
 	if (size < 501)
@@ -111,7 +111,6 @@ int	small_elm_cmp(int val, int *b, int start)
 
 int	get_small_elm_2(int *a, int *b, int size, int start)
 {
-	int	sm;
 	int	*tmp;
 	int	i;
 	int	max;
@@ -134,9 +133,8 @@ int	get_small_elm_2(int *a, int *b, int size, int start)
 	return (max);
 }
 
-int	get_small_elm_1(int *a, int *b, int size, int start)
+int	get_small_elm_1(int *a, int size, int start)
 {
-	int	sm;
 	int	*tmp;
 	int	i;
 	int	max;
@@ -169,7 +167,7 @@ int get_rr_rrr(int max, int val, int *b, int start)
 	i = -1;
 	ret = 0;
 	j = get_b_index(b, val, start);
-	tmp = return_b_r(b, start, j);
+	tmp = return_b_r(start, j);
 	if (is_odd(max))
 	{
 		while (++i < max / 2)
@@ -183,7 +181,7 @@ int get_rr_rrr(int max, int val, int *b, int start)
 	return (ret);
 }
 
-int return_b_r(int *b, int size, int i)
+int return_b_r(int size, int i)
 {
 	if (size < 2)
 		return (0);
@@ -199,51 +197,7 @@ int	is_odd(int num)
 	return (0);
 }
 
-void do_it_1(int *a, int *b, int start, int size)
-{
-	int	max;
-	int	i;
-	int j;
-	int	tmp;
-
-	i = -1;
-	max = get_small_elm_1(a, b, size, start);
-	if (is_odd(max))
-	{
-		j = get_b_index(b, a[max / 2], start);
-		tmp = return_b_r(b, start, j);
-		while (++i < max / 2)
-		{
-			if (tmp > 0)
-			{
-				if (i < tmp)
-					rr(a, b, start, size);
-			}
-			else
-				ra(a, start, size);
-		}
-	}
-	else
-	{
-		j = get_b_index(b, a[size - (max + 1) / 2], start);
-		tmp = return_b_r(b, start, j);
-		while (++i < max / 2 + 1)
-		{
-			if (tmp < 0)
-			{
-				if (i < -tmp)
-					rrr(a, b, start, size);
-			}
-			else
-				rra(a, start, size);
-		}
-	}
-	j = get_b_index(b, a[start], start);
-	sort_b(b, start, j);
-	pb(a, b, start);
-}
-
-void do_it_2(int *a, int *b, int start, int size)
+void do_it_1(int *a, int *b, int ints[3])
 {
 	int	max;
 	int	i;
@@ -251,40 +205,84 @@ void do_it_2(int *a, int *b, int start, int size)
 	int	tmp;
 
 	i = -1;
-	max = get_small_elm_2(a, b, size, start);
+	max = get_small_elm_1(a, ints[S_SIZE], ints[S_START]);
 	if (is_odd(max))
 	{
-		j = get_b_index(b, a[max / 2], start);
-		tmp = return_b_r(b, start, j);
+		j = get_b_index(b, a[max / 2], ints[S_START]);
+		tmp = return_b_r(ints[S_START], j);
 		while (++i < max / 2)
 		{
 			if (tmp > 0)
 			{
 				if (i < tmp)
-					rr(a, b, start, size);
+					rr(a, b, ints[S_START], ints[S_SIZE]);
 			}
 			else
-				ra(a, start, size);
+				ra(a, ints[S_START], ints[S_SIZE]);
 		}
 	}
 	else
 	{
-		j = get_b_index(b, a[size - (max + 1) / 2], start);
-		tmp = return_b_r(b, start, j);
+		j = get_b_index(b, a[ints[S_SIZE] - (max + 1) / 2], ints[S_START]);
+		tmp = return_b_r(ints[S_START], j);
 		while (++i < max / 2 + 1)
 		{
 			if (tmp < 0)
 			{
 				if (i < -tmp)
-					rrr(a, b, start, size);
+					rrr(a, b, ints[S_START], ints[S_SIZE]);
 			}
 			else
-				rra(a, start, size);
+				rra(a, ints[S_START], ints[S_SIZE]);
 		}
 	}
-	j = get_b_index(b, a[start], start);
-	sort_b(b, start, j);
-	pb(a, b, start);
+	j = get_b_index(b, a[ints[S_START]], ints[S_START]);
+	sort_b(b, ints[S_START], j);
+	pb(a, b, ints[S_START]);
+}
+
+void do_it_2(int *a, int *b, int ints[3])
+{
+	int	max;
+	int	i;
+	int	j;
+	int	tmp;
+
+	i = -1;
+	max = get_small_elm_2(a, b, ints[S_SIZE], ints[S_START]);
+	if (is_odd(max))
+	{
+		j = get_b_index(b, a[max / 2], ints[S_START]);
+		tmp = return_b_r(ints[S_START], j);
+		while (++i < max / 2)
+		{
+			if (tmp > 0)
+			{
+				if (i < tmp)
+					rr(a, b, ints[S_START], ints[S_SIZE]);
+			}
+			else
+				ra(a, ints[S_START], ints[S_SIZE]);
+		}
+	}
+	else
+	{
+		j = get_b_index(b, a[ints[S_SIZE] - (max + 1) / 2], ints[S_START]);
+		tmp = return_b_r(ints[S_START], j);
+		while (++i < max / 2 + 1)
+		{
+			if (tmp < 0)
+			{
+				if (i < -tmp)
+					rrr(a, b, ints[S_START], ints[S_SIZE]);
+			}
+			else
+				rra(a, ints[S_START], ints[S_SIZE]);
+		}
+	}
+	j = get_b_index(b, a[ints[S_START]], ints[S_START]);
+	sort_b(b, ints[S_START], j);
+	pb(a, b, ints[S_START]);
 }
 
 void	finalize_b(int *b, int start)
@@ -319,50 +317,117 @@ void	do_3(int *a, int start)
 		sa(a, start);
 }
 
-int	cond(int *a, int *b, int start, int size)
+void	pull_a_to_top(int *a, int ints[3], int i)
+{
+	int	j;
+
+	j = -1;
+	if (i <= ints[S_SIZE] / 2)
+		while (++j < i)
+			ra(a, ints[S_START], ints[S_SIZE]);
+	else
+		while (++j < ints[S_SIZE] - i)
+			rra(a, ints[S_START], ints[S_SIZE]);
+}
+
+void	pre_sort(int *a, int *b, int ints[3])
 {
 	int	i;
+	int	j;
+	int	rows;
 
+	rows = get_rows(ints[S_SIZE]);
+	i = 0;
+	while (++i <= rows)
+	{
+		j = ints[S_START] - 1;
+		while (++j < ints[S_SIZE])
+		{
+			if (a[j] < i * ints[S_SIZE] / rows)
+			{
+				pull_a_to_top(a, ints, j);
+				pb(a, b, ints[S_START]);
+				ints[S_START]++;
+			}
+			if (a[ints[S_SIZE] - j - 1] < i * ints[S_SIZE] / rows)
+			{
+				pull_a_to_top(a, ints, ints[S_SIZE] - j - 1);
+				pb(a, b, ints[S_START]);
+				ints[S_START]++;
+			}
+		}
+	}	
+}
+
+int	cond(int *a, int *b, int ints[3])
+{
+	int	i;
+	
 	i = -1;
-	if (size < 2)
-		return (start);
-	if (size < 3)
-		do_2(a, start);
-	else if (size < 4)
-		do_3(a, start);
-	else if (start < size * RAT)
+	if (ints[S_SIZE] < 2)
+		return (ints[S_START]);
+	if (ints[S_SIZE] < 3)
+		do_2(a, ints[S_START]);
+	else if (ints[S_SIZE] < 4)
+		do_3(a, ints[S_START]);
+	else if (ints[S_START] < ints[S_SIZE] * RAT)
 	{
-		do_it_2(a, b, start, size);
-		start++;
-		start = cond(a, b, start, size);
+		do_it_2(a, b, ints);
+		ints[S_START]++;
+		ints[S_START] = cond(a, b, ints);
 	}
-	else if (start < size)
+	else
 	{
-		do_it_1(a, b, start, size);
-		start++;
-		start = cond(a, b, start, size);
-	} else {
-		finalize_b(b, start);
-		while (++i < start)
+		finalize_b(b, ints[S_START]);
+		while (++i < ints[S_START])
 			pa(b, a, i);
-		start = 0;
+		ints[S_START] = 0;
 	}
-	return (start);
+	return (ints[S_START]);
 }
 
 void	push_swap(int *a, int size)
 {
 	int	*b;
 	int	*c;
-	int	max;
-	int	start;
 	int	i;
+	int	ints[3];
 
-	start = 0;
+	ints[S_START] = 0;
+	ints[S_SIZE] = size;
+	ints[S_TG] = size / get_rows(size);
+	print_a(a, 0, ints[S_SIZE]);
+	printf("\n");
 	i = -1;
 	b = malloc(size * sizeof(int));
 	c = malloc(size * sizeof(int));
-	start = cond(a, b, start, size);
+	pre_sort(a, b, ints);
+	printf("\n");
+	print_a(b, 0, ints[S_START]);
+}
+
+int	*pre_order(int *a, int size)
+{
+	int	i;
+	int	j;
+	int	val;
+	int	*c;
+
+	c = malloc(size * sizeof(int));
+	if (!c)
+		return (NULL);
+	i = -1;
+	while (++i < size)
+	{
+		j = -1;
+		val = 0;
+		while (++j < size)
+			if (a[j] > a[i])
+				val++;
+		c[i] = size - 1 - val;
+	}
+	free(a);
+	return (c);
 }
 
 int main(int argc, char *argv[])
@@ -378,6 +443,7 @@ int main(int argc, char *argv[])
 		str = argv[i];
 		a[i - 1] = ft_atoi(str);
 	}
+	a = pre_order(a, argc - 1);
 	push_swap(a, argc - 1);
 	return (0);
 }
