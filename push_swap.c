@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 16:06:21 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/17 20:23:24 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/06/21 01:02:39 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	get_rows(int size)
 {
 	if (size < 13)
 		return (2);
-	if (size < 100)
+	if (size < 101)
 		return (5);
-	if (size < 300)
+	if (size < 301)
 		return (10);
 	if (size < 501)
 		return (15);
@@ -133,7 +133,7 @@ int	get_small_elm_2(int *a, int *b, int size, int start)
 	return (max);
 }
 
-int	get_small_elm_1(int *a, int size, int start)
+int	getb_elm_1(int *a, int ints[3], int mod)
 {
 	int	*tmp;
 	int	i;
@@ -142,17 +142,17 @@ int	get_small_elm_1(int *a, int size, int start)
 
 	i = 0;
 	max = 0;
-	rows = get_rows(size - start);
+	rows = get_rows(ints[S_SIZE] - ints[S_START]);
 	tmp = malloc(2 * sizeof(int) * rows);
 	while (i < rows)
 	{
-		tmp[i * 2] = a[start + i];
-		tmp[i * 2 + 1] = a[size - i - 1];
+		tmp[i * 2] = a[ints[S_START] + i];
+		tmp[i * 2 + 1] = a[ints[S_SIZE] - i - 1];
 		i++;
 	}
 	i = 0;
 	while (++i < 2 * rows)
-		if (tmp[i] < tmp[max])
+		if ((mod == 1 && tmp[i] > tmp[max]) || (mod == 0 && tmp[i] < tmp[max]))
 			max = i;
 	return (max);
 }
@@ -317,73 +317,50 @@ void	do_3(int *a, int start)
 		sa(a, start);
 }
 
-void	pull_a_to_top(int *a, int ints[3], int i)
+void	pull_a_to_top(int *a, int *b, int ints[3], int i, int b_r)
 {
 	int	j;
 
 	j = -1;
-	if (i <= ints[S_SIZE] / 2)
-		while (++j < i)
-			ra(a, ints[S_START], ints[S_SIZE]);
-	else
-		while (++j < ints[S_SIZE] - i)
-			rra(a, ints[S_START], ints[S_SIZE]);
-}
-
-void	pre_sort(int *a, int *b, int ints[3])
-{
-	int	i;
-	int	j;
-	int	rows;
-
-	rows = get_rows(ints[S_SIZE]);
-	i = 0;
-	while (++i <= rows)
+	if (i - ints[S_START] <= (ints[S_SIZE] - ints[S_START]) / 2)
 	{
-		j = ints[S_START] - 1;
-		while (++j < ints[S_SIZE])
+		while (++j < i - ints[S_START])
 		{
-			if (a[j] < i * ints[S_SIZE] / rows)
-			{
-				pull_a_to_top(a, ints, j);
-				pb(a, b, ints[S_START]);
-				ints[S_START]++;
-			}
-			if (a[ints[S_SIZE] - j - 1] < i * ints[S_SIZE] / rows)
-			{
-				pull_a_to_top(a, ints, ints[S_SIZE] - j - 1);
-				pb(a, b, ints[S_START]);
-				ints[S_START]++;
-			}
+			if (b_r > 0 && j < b_r)
+				rr(a, b, ints[S_START], ints[S_SIZE]);
+			else
+				ra(a, ints[S_START], ints[S_SIZE]);
 		}
-	}	
-}
-
-int	cond(int *a, int *b, int ints[3])
-{
-	int	i;
-	
-	i = -1;
-	if (ints[S_SIZE] < 2)
-		return (ints[S_START]);
-	if (ints[S_SIZE] < 3)
-		do_2(a, ints[S_START]);
-	else if (ints[S_SIZE] < 4)
-		do_3(a, ints[S_START]);
-	else if (ints[S_START] < ints[S_SIZE] * RAT)
-	{
-		do_it_2(a, b, ints);
-		ints[S_START]++;
-		ints[S_START] = cond(a, b, ints);
 	}
 	else
 	{
-		finalize_b(b, ints[S_START]);
-		while (++i < ints[S_START])
-			pa(b, a, i);
-		ints[S_START] = 0;
+		while (++j < ints[S_SIZE] - i)
+		{
+			if (b_r < 0 && j < -b_r)
+				rrr(a, b, ints[S_START], ints[S_SIZE]);
+			else
+				rra(a, ints[S_START], ints[S_SIZE]);
+		}
 	}
-	return (ints[S_START]);
+}
+
+int	return_weight(int *a, int ints[3])
+{
+	int	i;
+	int	w;
+	int	c;
+
+	w = 0;
+	c = 0;
+	i = -1;
+	while (++i < ints[S_SIZE] / 4 && ++c)
+		w += a[i];
+	i = ints[S_SIZE];
+	while (--i > 3 * ints[S_SIZE] / 4 && ++c)
+		w += a[i];
+	if (w / c < (ints[S_SIZE] + 1) / 2)
+		return (0);
+	return (1);
 }
 
 void	push_swap(int *a, int size)
@@ -395,15 +372,15 @@ void	push_swap(int *a, int size)
 
 	ints[S_START] = 0;
 	ints[S_SIZE] = size;
-	ints[S_TG] = size / get_rows(size);
-	print_a(a, 0, ints[S_SIZE]);
-	printf("\n");
+	// print_a(a, 0, ints[S_SIZE]);
+	// printf("\n");
 	i = -1;
 	b = malloc(size * sizeof(int));
 	c = malloc(size * sizeof(int));
-	pre_sort(a, b, ints);
-	printf("\n");
-	print_a(b, 0, ints[S_START]);
+	ints[S_WEIGHT] = return_weight(a, ints);
+	// pre_sort(a, b, ints);
+	// printf("\n");
+	// print_a(b, 0, ints[S_START]);
 }
 
 int	*pre_order(int *a, int size)
@@ -443,6 +420,8 @@ int main(int argc, char *argv[])
 		str = argv[i];
 		a[i - 1] = ft_atoi(str);
 	}
+	// print_a(a, 0, argc - 1);
+	// printf("\n");
 	a = pre_order(a, argc - 1);
 	push_swap(a, argc - 1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:38:44 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/17 17:46:13 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/06/21 01:01:02 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define RAT 1
 # define S_START 0
 # define S_SIZE 1
-# define S_TG 2
+# define S_WEIGHT 2
 
 int		return_b_r(int size, int i);
 int		get_rr_rrr(int max, int val, int *b, int start);

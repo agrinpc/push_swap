@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:38:24 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/17 17:46:00 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/06/20 23:59:25 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ void	rb(int *b, int start, int size)
 void	ra(int *a, int start, int size)
 {
 	int	i;
-	int tmp;
-	
+	int	tmp;
+
 	i = start - 1;
 	tmp = a[start];
 	while (++i < size - 1)
