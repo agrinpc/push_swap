@@ -25,16 +25,6 @@ int	get_rows(int size)
 	return (20);
 }
 
-void	print_a(int *a, int start, int size)
-{
-	int	i;
-
-	i = start - 1;
-	while (++i < size)
-		printf("%d\n", a[i]);
-	printf("*********************\n");
-}
-
 int	get_b_index(int *b, int val, int size)
 {
 	int	i;
@@ -133,7 +123,7 @@ int	get_small_elm_2(int *a, int *b, int size, int start)
 	return (max);
 }
 
-int	getb_elm_1(int *a, int ints[3], int mod)
+int	get_elm(int *a, int ints[3])
 {
 	int	*tmp;
 	int	i;
@@ -152,9 +142,12 @@ int	getb_elm_1(int *a, int ints[3], int mod)
 	}
 	i = 0;
 	while (++i < 2 * rows)
-		if ((mod == 1 && tmp[i] > tmp[max]) || (mod == 0 && tmp[i] < tmp[max]))
+		if ((ints[S_WEIGHT] == 1 && tmp[i] > tmp[max]) || (ints[S_WEIGHT] == 0 && tmp[i] < tmp[max]))
 			max = i;
-	return (max);
+	free(tmp);
+	if (is_odd(max))
+		return (max / 2);
+	return (ints[S_SIZE] - 1 - (max / 2));
 }
 
 int get_rr_rrr(int max, int val, int *b, int start)
@@ -197,93 +190,49 @@ int	is_odd(int num)
 	return (0);
 }
 
-void do_it_1(int *a, int *b, int ints[3])
-{
-	int	max;
-	int	i;
-	int	j;
-	int	tmp;
+// void do_it_2(int *a, int *b, int ints[3])
+// {
+// 	int	max;
+// 	int	i;
+// 	int	j;
+// 	int	tmp;
 
-	i = -1;
-	max = get_small_elm_1(a, ints[S_SIZE], ints[S_START]);
-	if (is_odd(max))
-	{
-		j = get_b_index(b, a[max / 2], ints[S_START]);
-		tmp = return_b_r(ints[S_START], j);
-		while (++i < max / 2)
-		{
-			if (tmp > 0)
-			{
-				if (i < tmp)
-					rr(a, b, ints[S_START], ints[S_SIZE]);
-			}
-			else
-				ra(a, ints[S_START], ints[S_SIZE]);
-		}
-	}
-	else
-	{
-		j = get_b_index(b, a[ints[S_SIZE] - (max + 1) / 2], ints[S_START]);
-		tmp = return_b_r(ints[S_START], j);
-		while (++i < max / 2 + 1)
-		{
-			if (tmp < 0)
-			{
-				if (i < -tmp)
-					rrr(a, b, ints[S_START], ints[S_SIZE]);
-			}
-			else
-				rra(a, ints[S_START], ints[S_SIZE]);
-		}
-	}
-	j = get_b_index(b, a[ints[S_START]], ints[S_START]);
-	sort_b(b, ints[S_START], j);
-	pb(a, b, ints[S_START]);
-}
-
-void do_it_2(int *a, int *b, int ints[3])
-{
-	int	max;
-	int	i;
-	int	j;
-	int	tmp;
-
-	i = -1;
-	max = get_small_elm_2(a, b, ints[S_SIZE], ints[S_START]);
-	if (is_odd(max))
-	{
-		j = get_b_index(b, a[max / 2], ints[S_START]);
-		tmp = return_b_r(ints[S_START], j);
-		while (++i < max / 2)
-		{
-			if (tmp > 0)
-			{
-				if (i < tmp)
-					rr(a, b, ints[S_START], ints[S_SIZE]);
-			}
-			else
-				ra(a, ints[S_START], ints[S_SIZE]);
-		}
-	}
-	else
-	{
-		j = get_b_index(b, a[ints[S_SIZE] - (max + 1) / 2], ints[S_START]);
-		tmp = return_b_r(ints[S_START], j);
-		while (++i < max / 2 + 1)
-		{
-			if (tmp < 0)
-			{
-				if (i < -tmp)
-					rrr(a, b, ints[S_START], ints[S_SIZE]);
-			}
-			else
-				rra(a, ints[S_START], ints[S_SIZE]);
-		}
-	}
-	j = get_b_index(b, a[ints[S_START]], ints[S_START]);
-	sort_b(b, ints[S_START], j);
-	pb(a, b, ints[S_START]);
-}
+// 	i = -1;
+// 	max = get_small_elm_2(a, b, ints[S_SIZE], ints[S_START]);
+// 	if (is_odd(max))
+// 	{
+// 		j = get_b_index(b, a[max / 2], ints[S_START]);
+// 		tmp = return_b_r(ints[S_START], j);
+// 		while (++i < max / 2)
+// 		{
+// 			if (tmp > 0)
+// 			{
+// 				if (i < tmp)
+// 					rr(a, b, ints[S_START], ints[S_SIZE]);
+// 			}
+// 			else
+// 				ra(a, ints[S_START], ints[S_SIZE]);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		j = get_b_index(b, a[ints[S_SIZE] - (max + 1) / 2], ints[S_START]);
+// 		tmp = return_b_r(ints[S_START], j);
+// 		while (++i < max / 2 + 1)
+// 		{
+// 			if (tmp < 0)
+// 			{
+// 				if (i < -tmp)
+// 					rrr(a, b, ints[S_START], ints[S_SIZE]);
+// 			}
+// 			else
+// 				rra(a, ints[S_START], ints[S_SIZE]);
+// 		}
+// 	}
+// 	j = get_b_index(b, a[ints[S_START]], ints[S_START]);
+// 	sort_b(b, ints[S_START], j);
+// 	pb(arr, ints[S_START]);
+// }
 
 void	finalize_b(int *b, int start)
 {
@@ -317,7 +266,7 @@ void	do_3(int *a, int start)
 		sa(a, start);
 }
 
-void	pull_a_to_top(int *a, int *b, int ints[3], int i, int b_r)
+void	pull_a_to_top(int **arr, int ints[3], int i, int b_rot)
 {
 	int	j;
 
@@ -326,22 +275,46 @@ void	pull_a_to_top(int *a, int *b, int ints[3], int i, int b_r)
 	{
 		while (++j < i - ints[S_START])
 		{
-			if (b_r > 0 && j < b_r)
-				rr(a, b, ints[S_START], ints[S_SIZE]);
+			if (b_rot > 0 && j < b_rot)
+				rr(arr[ARR_A], arr[ARR_B], ints[S_START], ints[S_SIZE]);
 			else
-				ra(a, ints[S_START], ints[S_SIZE]);
+				ra(arr[ARR_A], ints[S_START], ints[S_SIZE]);
 		}
 	}
 	else
 	{
 		while (++j < ints[S_SIZE] - i)
 		{
-			if (b_r < 0 && j < -b_r)
-				rrr(a, b, ints[S_START], ints[S_SIZE]);
+			if (b_rot < 0 && j < -b_rot)
+				rrr(arr[ARR_A], arr[ARR_B], ints[S_START], ints[S_SIZE]);
 			else
-				rra(a, ints[S_START], ints[S_SIZE]);
+				rra(arr[ARR_A], ints[S_START], ints[S_SIZE]);
 		}
 	}
+}
+
+void	do_more(int **arr, int ints[3])
+{
+	int	elm;
+	int b_indx;
+	int	b_rot;
+	int	i;
+
+	while (ints[S_START] < ints[S_SIZE])
+	{
+		elm = get_elm(arr[ARR_A], ints);
+		b_indx = get_b_index(arr[ARR_B], arr[ARR_A][elm], ints[S_START]);
+		b_rot = return_b_r(ints[S_START], b_indx);
+		pull_a_to_top(arr, ints, elm, b_rot);
+		b_indx = get_b_index(arr[ARR_B], arr[ARR_A][elm], ints[S_START]);
+		sort_b(arr[ARR_B], ints[S_START], b_indx);
+		pb(arr, ints[S_START]);
+		ints[S_START]++;
+	}
+	finalize_b(arr[ARR_B], ints[S_START]);
+	i = -1;
+	while (++i < ints[S_SIZE])
+		pa(arr, ints[S_START]);
 }
 
 int	return_weight(int *a, int ints[3])
@@ -367,20 +340,27 @@ void	push_swap(int *a, int size)
 {
 	int	*b;
 	int	*c;
-	int	i;
 	int	ints[3];
+	int	**arr;
 
 	ints[S_START] = 0;
 	ints[S_SIZE] = size;
-	// print_a(a, 0, ints[S_SIZE]);
-	// printf("\n");
-	i = -1;
 	b = malloc(size * sizeof(int));
 	c = malloc(size * sizeof(int));
+	arr = malloc(3);
+	arr[ARR_A] = a;
+	arr[ARR_B] = b;
+	arr[ARR_C] = c;
 	ints[S_WEIGHT] = return_weight(a, ints);
-	// pre_sort(a, b, ints);
-	// printf("\n");
-	// print_a(b, 0, ints[S_START]);
+	if (ints[S_SIZE] == 2)
+		do_2(arr[ARR_A], ints[S_START]);
+	else if (ints[S_SIZE] == 3)
+		do_3(arr[ARR_A], ints[S_START]);
+	else
+	{
+		do_more(arr, ints);
+	}
+	print_a(arr[ARR_B], 0, ints[S_START]);
 }
 
 int	*pre_order(int *a, int size)
@@ -407,22 +387,3 @@ int	*pre_order(int *a, int size)
 	return (c);
 }
 
-int main(int argc, char *argv[])
-{
-	int		i;
-	int		*a;
-	char	*str;
-
-	i = 0;
-	a = malloc((argc - 1) * sizeof(int));
-	while (++i < argc)
-	{
-		str = argv[i];
-		a[i - 1] = ft_atoi(str);
-	}
-	// print_a(a, 0, argc - 1);
-	// printf("\n");
-	a = pre_order(a, argc - 1);
-	push_swap(a, argc - 1);
-	return (0);
-}

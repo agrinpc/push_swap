@@ -52,3 +52,13 @@ int	ft_atoi(const char *nptr)
 	}
 	return (sign * output);
 }
+
+void	print_a(int *a, int start, int size)
+{
+	int	i;
+
+	i = start - 1;
+	while (++i < size)
+		printf("%d\n", a[i]);
+	printf("*********************\n");
+}

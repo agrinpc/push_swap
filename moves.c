@@ -32,15 +32,15 @@ void	sb(int *b, int size)
 	printf("sb\n");
 }
 
-void	pb(int *a, int *b, int start)
+void	pb(int **arr, int start)
 {
-	b[start] = a[start];
+	arr[ARR_B][start] = arr[ARR_A][start];
 	printf("pb\n");
 }
 
-void	pa(int *b, int *a, int start)
+void	pa(int **arr, int start)
 {
-	a[start] = b[start];
+	arr[ARR_A][start] = arr[ARR_B][start];
 	printf("pa\n");
 }
 

@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 NAME = push_swap.a
+PROG = push_swap
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
@@ -20,6 +21,7 @@ RM = rm -f
 FILES = push_swap \
 		moves \
 		utils \
+		main \
 
 SRCS_DIR = ./
 SRCS = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(FILES)))
@@ -31,16 +33,19 @@ OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
 %.o:%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+$(PROG): $(NAME)
+	$(CC) $(CFLAGS) $(NAME) -o $(PROG)
+
 $(NAME): $(OBJS)
 	$(AR) $@ $^
 
-all: $(NAME)
+all: $(PROG)
 
 clean:
-	$(RM) $(OBJS) $(OBJS_B)
+	$(RM) $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(PROG) $(NAME)
 
 re: clean all
 
