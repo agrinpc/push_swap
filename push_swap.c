@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 16:06:21 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/21 01:02:39 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:37:08 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,34 @@ int	get_small_elm_2(int *a, int *b, int size, int start)
 	return (max);
 }
 
-int	get_elm(int *a, int ints[3])
+// int	get_elm(int **arr, int ints[3])
+// {
+// 	int	*tmp;
+// 	int	i;
+// 	int	max;
+// 	int	rows;
+
+// 	i = 0;
+// 	max = 0;
+// 	rows = get_rows(ints[S_SIZE] - ints[S_START]);
+// 	tmp = malloc(2 * sizeof(int) * rows);
+// 	while (i < rows)
+// 	{
+// 		tmp[i * 2] = arr[ARR_A][ints[S_START] + i];
+// 		tmp[i * 2 + 1] = arr[ARR_A][ints[S_SIZE] - i - 1];
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (++i < 2 * rows)
+// 		if ((ints[S_WEIGHT] == 1 && tmp[i] > tmp[max]) || (ints[S_WEIGHT] == 0 && tmp[i] < tmp[max]))
+// 			max = i;
+// 	free(tmp);
+// 	if (is_odd(max))
+// 		return (max / 2);
+// 	return (ints[S_SIZE] - 1 - (max / 2));
+// }
+
+int	get_elm(int **arr, int ints[3])
 {
 	int	*tmp;
 	int	i;
@@ -136,14 +163,15 @@ int	get_elm(int *a, int ints[3])
 	tmp = malloc(2 * sizeof(int) * rows);
 	while (i < rows)
 	{
-		tmp[i * 2] = a[ints[S_START] + i];
-		tmp[i * 2 + 1] = a[ints[S_SIZE] - i - 1];
+		tmp[i * 2] = arr[ARR_A][ints[S_START] + i];
+		tmp[i * 2 + 1] = arr[ARR_A][ints[S_SIZE] - i - 1];
 		i++;
 	}
 	i = 0;
 	while (++i < 2 * rows)
-		if ((ints[S_WEIGHT] == 1 && tmp[i] > tmp[max]) || (ints[S_WEIGHT] == 0 && tmp[i] < tmp[max]))
+		if (get_b_index_cmp(arr[ARR_B], tmp[i], ints[S_START]) + (i / 2 + i % 2) - get_rr_rrr(i, tmp[i], arr[ARR_B], ints[S_START]) < get_b_index_cmp(arr[ARR_B], tmp[max], ints[S_START]) + (max / 2 + max % 2) - get_rr_rrr(max, tmp[max], arr[ARR_B], ints[S_START]) )
 			max = i;
+	// printf("\n i = %d, tmp[%d] = %d\n", max, max, tmp[max]);
 	free(tmp);
 	if (is_odd(max))
 		return (max / 2);
@@ -176,10 +204,10 @@ int get_rr_rrr(int max, int val, int *b, int start)
 
 int return_b_r(int size, int i)
 {
-	if (size < 2)
+	if (size < 2 || i == 0 || size == i)
 		return (0);
-	if (size - i < size / 2)
-		return (size - 2);
+	if (size - i < (size + 1) / 2)
+		return (size - i);
 	return (-i - 1);
 }
 
@@ -302,16 +330,20 @@ void	do_more(int **arr, int ints[3])
 
 	while (ints[S_START] < ints[S_SIZE])
 	{
-		elm = get_elm(arr[ARR_A], ints);
+		elm = get_elm(arr, ints) + ints[S_START];
 		b_indx = get_b_index(arr[ARR_B], arr[ARR_A][elm], ints[S_START]);
 		b_rot = return_b_r(ints[S_START], b_indx);
+		printf("\n elm = %d, b_index = %d, b_rot = %d\n", arr[ARR_A][elm], b_indx, b_rot);
+		print_a(arr[ARR_B], 0, ints[S_START]);
 		pull_a_to_top(arr, ints, elm, b_rot);
 		b_indx = get_b_index(arr[ARR_B], arr[ARR_A][elm], ints[S_START]);
 		sort_b(arr[ARR_B], ints[S_START], b_indx);
 		pb(arr, ints[S_START]);
 		ints[S_START]++;
 	}
+	// print_a(arr[ARR_B], 0, ints[S_START]);
 	finalize_b(arr[ARR_B], ints[S_START]);
+	// print_a(arr[ARR_B], 0, ints[S_START]);
 	i = -1;
 	while (++i < ints[S_SIZE])
 		pa(arr, ints[S_START]);
@@ -386,4 +418,3 @@ int	*pre_order(int *a, int size)
 	free(a);
 	return (c);
 }
-
