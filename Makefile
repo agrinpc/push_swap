@@ -34,7 +34,7 @@ OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(PROG): $(NAME)
-	$(CC) $(CFLAGS) $(NAME) -o $(PROG)
+	$(CC) $(CFLAGS) -g $(NAME) -o $(PROG)
 
 $(NAME): $(OBJS)
 	$(AR) $@ $^
