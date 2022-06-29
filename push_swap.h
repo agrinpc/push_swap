@@ -28,7 +28,9 @@
 void	push_swap(int *a, int size);
 int		*pre_order(int *a, int size);
 int		return_b_r(int size, int i);
+int 	return_a_r(int ints[3], int a_index);
 int		get_rr_rrr(int max, int val, int *b, int start);
+int		get_a_rr_rrr(int max, int val, int *a, int ints[3]);
 int		is_odd(int num);
 void	sa(int *a, int start);
 void	sb(int *b, int size);
