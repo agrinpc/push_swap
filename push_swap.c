@@ -58,25 +58,16 @@ int	get_a_index(int *a, int val, int start, int size)
 {
 	int	i;
 
-	i = size;
-	while (--i > start + 1)
+	i = start - 1;
+	while (++i < size - 1)
 	{
-		if (val < a[i])
-			if (val > a[i - 1] || a[i - 1] > a[i])
-				return (i - 1);
-		if (val > a[i - 1] && a[i - 1] > a[i])
-			return (i - 1);
+		if (val > a[i])
+			if (val < a[i + 1] || a[i + 1] < a[i])
+				return (i);
+		if (val < a[i + 1] && a[i + 1] < a[i])
+			return (i);
 	}
-	return (start);
-}
-
-int	get_a_rotation(int ints[3], int a_index)
-{
-	if (a_index - ints[S_START] >= (ints[S_SIZE] - ints[S_START]) / 2)
-		return (ints[S_SIZE] - a_index - 1);
-	else
-		return (a_index - ints[S_START]);
-	return (0);
+	return (size - 1);
 }
 
 int	get_b_index_cmp(int *b, int val, int size)
@@ -123,23 +114,19 @@ void sort_b(int *b, int size, int i)
 	}
 }
 
-void sort_a(int *a, int start, int size, int a_index)
+void sort_a(int *a, int ints[3], int a_rot)
 {
 	int	j;
 
-	if (size - start < 2)
+	if (ints[S_SIZE] - ints[S_START] < 2)
 		return ;
-	// printf("\n ** SIZE = %d, start = %d, a_index = %d **\n", size, start, a_index);
-	if (a_index - start > 0)
-	{
-		j = -1;
-		if (a_index - start >= (size - start) / 2)
-			while (++j < size - a_index - 1)
-				rra(a, start + 1, size);
-		else
-			while (++j < a_index - start)
-				ra(a, start + 1, size);
-	}
+	j = -1;
+	if (a_rot > 0)
+		while (++j < a_rot)
+			rra(a, ints[S_START], ints[S_SIZE]);
+	else
+		while (++j < -a_rot)
+			ra(a, ints[S_START], ints[S_SIZE]);
 }
 
 void sort_b2(int *b, int size, int i)
@@ -160,18 +147,11 @@ void sort_b2(int *b, int size, int i)
 	}
 }
 
-int	elm_abs(int val1, int val2)
+int	abs(int val)
 {
-	if (val1 - val2 < 0)
-		return (val2 - val1);
-	return (val1 - val2);
-}
-
-int	small_elm_cmp(int val, int *b, int start)
-{
-	if (elm_abs(val, b[0]) < elm_abs(val, b[start]))
-		return (elm_abs(val, b[0]));
-	return (elm_abs(val, b[start]));
+	if (val < 0)
+		return (-val);
+	return (val);
 }
 
 int	get_moves_count_b(int **arr, int ints[3], int val, int i)
@@ -186,7 +166,23 @@ int	get_moves_count_b2(int **arr, int ints[3], int val, int i)
 
 int	get_moves_count_a(int **arr, int ints[3], int val, int i)
 {
-	return (get_a_rotation(ints, get_a_index(arr[ARR_A], val, ints[S_SIZE], ints[S_SIZE])) + i - get_a_rr_rrr(i, val, arr[ARR_A], ints));
+	int	a_indx;
+	int a_rot;
+	int	b_rot;
+	int	ret;
+
+	a_indx = get_a_index(arr[ARR_A], val, ints[S_SIZE], ints[S_SIZE]);
+	a_rot = return_a_r(ints, a_indx);
+	if (a_rot < 0)
+		ret = i - ints[S_START] - a_rot;
+	else
+	{
+		b_rot = i - ints[S_START] - a_rot;
+		if (b_rot < 0)
+			b_rot = 0;
+		ret = b_rot + a_rot;
+	}
+	return (ret);
 }
 
 int get_moves_total(int **arr, int ints[3], int *tmp, int i)
@@ -317,23 +313,6 @@ int get_rr_rrr(int max, int val, int *b, int start)
 	return (ret);
 }
 
-int get_a_rr_rrr(int max, int val, int *a, int ints[3])
-{
-	int	j;
-	int	ret;
-	int	tmp;
-	int	i;
-
-	i = -1;
-	ret = 0;
-	j = get_a_index(a, val, ints[S_START], ints[S_SIZE]);
-	tmp = return_a_r(ints, j);
-	if (tmp > 0)
-	while (++i < max && i < tmp)
-			ret++;
-	return (ret);
-}
-
 int return_b_r(int size, int i)
 {
 	if (size < 2 || i == 0 || size == i)
@@ -345,11 +324,13 @@ int return_b_r(int size, int i)
 
 int return_a_r(int ints[3], int a_index)
 {
-	printf("\n*** size = %d, start = %d, a_index = %d ***\n", ints[S_SIZE], ints[S_START], a_index);
-	if (a_index - ints[S_START] >= (ints[S_SIZE] - ints[S_START]) / 2)
-		return (-(ints[S_SIZE] - a_index - 1));
+	// printf("\n*** size = %d, start = %d, a_index = %d ***\n", ints[S_SIZE], ints[S_START], a_index);
+	if (a_index == ints[S_SIZE] - 1)
+		return (0);
+	if (abs(a_index - ints[S_START]) > abs(ints[S_SIZE] - 1 - a_index))
+		return (ints[S_SIZE] - a_index);
 	else
-		return (a_index - ints[S_START]);
+		return (ints[S_START] - a_index - 1);
 	return (0);
 }
 
@@ -491,24 +472,31 @@ void	do_rest(int	**arr, int ints[3])
 	i = ints[S_START];
 	while (--i > ints[S_WEIGHT])
 	{
-		print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
-		print_a(arr[ARR_B], 0, ints[S_START]);
+		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
 		elm = get_elm_in_a(arr, ints) + ints[S_START] - 1;
 		a_indx = get_a_index(arr[ARR_A], arr[ARR_A][elm], ints[S_START], ints[S_SIZE]);
 		a_rot = return_a_r(ints, a_indx);
-		printf("\n*** a_rot = %d, elm = %d, a_index = %d ****\n", a_rot, elm, a_indx);
+			// printf("\n*** size = %d, start = %d, a_rot = %d, elm = %d, a_index = %d ****\n", ints[S_SIZE], ints[S_START], a_rot, arr[ARR_B][elm], a_indx);
 		pull_b_to_top(arr, ints, elm, a_rot);
 		a_indx = get_a_index(arr[ARR_A], arr[ARR_A][elm], ints[S_START], ints[S_SIZE]);
-		sort_a(arr[ARR_A], ints[S_START], ints[S_SIZE], a_indx);
+		a_rot = return_a_r(ints, a_indx);
+		sort_a(arr[ARR_A], ints, a_rot);
+		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
 		pa(arr, ints[S_SIZE]);
 		ints[S_START]--;
+		print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
 	}
+	i++;
 	while (--i > -1)
 	{
 		a_indx = get_a_index(arr[ARR_A], arr[ARR_B][i], ints[S_START], ints[S_SIZE]);
-		sort_a(arr[ARR_A], i, ints[S_SIZE], a_indx);
+		a_rot = return_a_r(ints, a_indx);
+		if (arr[ARR_B][i] == 8)
+			printf("\n*** size = %d, start = %d, a_rot = %d, elm = %d, a_index = %d ****\n", ints[S_SIZE], ints[S_START], a_rot, arr[ARR_B][i], a_indx);
+		sort_a(arr[ARR_A], ints, a_rot);
 		pa(arr, ints[S_SIZE]);
 		ints[S_START]--;
+		print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
 	}
 }
 
@@ -534,6 +522,7 @@ void	do_more(int **arr, int ints[3])
 	while (++ints[S_START] < ints[S_SIZE] - 2)
 		pb(arr, ints[S_START]);
 	// do_3(arr[ARR_A], ints[S_START]);
+	do_2(arr[ARR_A], ints[S_START]);
 	do_rest(arr, ints);
 	finalize_a(arr[ARR_A], ints[S_SIZE]);
 }
