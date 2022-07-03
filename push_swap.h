@@ -57,5 +57,25 @@ void	print_a(int *a, int start, int size);
 int		get_elm_index(int ints[3], int max);
 void	pull_a_to_top(int **arr, int ints[3], int i, int b_rot);
 void	pull_a2_to_top(int **arr, int ints[3], int i, int b_rot);
+void	sort_a(int *a, int ints[3], int a_rot);
+void	sort_b(int *b, int size, int i);
+void	sort_b2(int *b, int size, int i);
+int		get_moves_count_a(int **arr, int ints[3], int val, int i);
+int		get_moves_count_b(int **arr, int ints[3], int val, int i);
+int		get_moves_count_b2(int **arr, int ints[3], int val, int i);
+void	pull_b_to_top(int **arr, int ints[3], int i, int a_rot);
+void	pull_a_to_top(int **arr, int ints[3], int i, int b_rot);
+void	pull_a2_to_top(int **arr, int ints[3], int i, int b_rot);
+int		get_a_index(int *a, int val, int start, int size);
+int		get_b_index(int *b, int val, int size);
+int		get_b_index_cmp(int *b, int val, int size);
+int		get_elm(int **arr, int ints[3]);
+int		get_elm_in_a(int **arr, int ints[3]);
+void	finalize_a(int *a, int size);
+void	finalize_b(int *b, int start);
+void	cpy_arr(int *src, int *dst, int size);
+int		get_rows(int size);
+int		get_moves_total(int **arr, int ints[3], int *tmp, int i);
+int		get_elm_index(int ints[3], int max);
 
 #endif

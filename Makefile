@@ -21,6 +21,10 @@ RM = rm -f
 FILES = push_swap \
 		moves \
 		utils \
+		a_utils \
+		b_utils \
+		b2_utils \
+		common_utils \
 		main \
 
 SRCS_DIR = ./
