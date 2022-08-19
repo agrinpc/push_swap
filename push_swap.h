@@ -25,6 +25,8 @@
 # define ARR_A2 2
 # define ARR_B2 3
 
+# define CHUNKS 5
+
 void	push_swap(int *a, int size);
 int		*pre_order(int *a, int size);
 int		return_b_r(int size, int i);
@@ -77,5 +79,9 @@ void	cpy_arr(int *src, int *dst, int size);
 int		get_rows(int size);
 int		get_moves_total(int **arr, int ints[3], int *tmp, int i);
 int		get_elm_index(int ints[3], int max);
+int		get_a_position(int *a, int ints[3], int val);
+int		get_elm_in_b(int **arr, int	ints[3], int ch_s, int ch_e);
+int		get_b_moves(int **arr, int ints[3], int val);
+void	pull_a_to_top_simple(int **arr, int ints[3], int i);
 
 #endif

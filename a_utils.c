@@ -39,10 +39,10 @@ void sort_a(int *a, int ints[3], int a_rot)
 	j = -1;
 	if (a_rot > 0)
 		while (++j < a_rot)
-			rra(a, ints[S_START], ints[S_SIZE]);
+			ra(a, ints[S_START], ints[S_SIZE]);
 	else
 		while (++j < -a_rot)
-			ra(a, ints[S_START], ints[S_SIZE]);
+			rra(a, ints[S_START], ints[S_SIZE]);
 }
 
 int	get_moves_count_a(int **arr, int ints[3], int dir, int i)
@@ -53,19 +53,34 @@ int	get_moves_count_a(int **arr, int ints[3], int dir, int i)
 	int	ret;
 	int	val;
 
+	val = 0;
 	if (dir == -1)
-		val = arr[ARR_B][ints[S_START] - i];
+		val = arr[ARR_B][ints[S_START] - i - 1];
 	else if (dir == 1)
 		val = arr[ARR_B][i - 1];
-	a_indx = get_a_index(arr[ARR_A], val, ints[S_SIZE], ints[S_SIZE]);
+	a_indx = get_a_index(arr[ARR_A], val, ints[S_START], ints[S_SIZE]);
+	// printf("\nval = %d, a_index = %d\n", val, a_indx);
 	a_rot = return_a_r(ints, a_indx);
-	b_rot = i;
-	if ((a_rot < 0 && dir == -1) || (a_rot > 0 && dir == 1))
-		b_rot = i - dir * a_rot;
-	if (b_rot < 0)
-		b_rot = 0;
-	// printf("\n a_rot = %d, b_rot = %d, dir = %d, res = %d\n", a_rot, b_rot, dir, b_rot + dir * a_rot);
-	ret = b_rot + dir * a_rot;
+	b_rot = dir * (-i);
+	if (a_rot < 0 && b_rot < 0)
+	{
+		if (a_rot < b_rot)
+			return (-a_rot);
+		else
+			return (-b_rot);
+	}
+	
+	if (a_rot > 0 && b_rot > 0)
+	{
+		if (a_rot > b_rot)
+			return (a_rot);
+		else
+			return (b_rot);
+	}
+	ret = a_rot - b_rot;
+	if (ret < 0)
+		ret = -1 * ret;
+	// printf("\nval=%d, a_rot = %d, b_rot = %d, dir = %d, res = %d\n", val, a_rot, b_rot, dir, ret);
 	return (ret);
 }
 
@@ -73,6 +88,7 @@ int	get_elm_in_a(int **arr, int ints[3])
 {
 	int	i;
 	int	max;
+	int g_max;
 	int	rows;
 	int	dir;
 
@@ -86,23 +102,27 @@ int	get_elm_in_a(int **arr, int ints[3])
 	// printf("\n1 - maxmove = %d", get_moves_count_a(arr, ints, dir, max));
 	while (++i < rows)
 	{
-		
-		if (get_moves_count_a(arr, ints, -1, i) < get_moves_count_a(arr, ints, dir, max))
+		g_max = get_moves_count_a(arr, ints, dir, max);
+		if (g_max < 2)
+			break ;
+		// printf("\ni=%d, gi+ = %d, gi- = %d, gm = %d\n", i, get_moves_count_a(arr, ints, 1, i), get_moves_count_a(arr, ints, -1, i), get_moves_count_a(arr, ints, dir, max));
+		if (get_moves_count_a(arr, ints, -1, i) < g_max)
 		{
 			max = i;
 			dir = -1;
 		}
-		if (get_moves_count_a(arr, ints, 1, i) < get_moves_count_a(arr, ints, dir, max))
+		if (get_moves_count_a(arr, ints, 1, i) < g_max)
 		{
 			max = i;
 			dir = 1;
 		}
 	}
+	// printf("\n*** max = %d, dir = %d ***\n", max, dir);
 	if (dir == -1)
 		max = ints[S_START] - max - 1;
 	else
 		max--;
-	// printf("\n*** max = %d ***\n", max);
+	// printf("\n*** max = %d, b = %d ***\n", max, arr[ARR_B][max]);
 	return (max);
 }
 
@@ -111,10 +131,10 @@ int return_a_r(int ints[3], int a_index)
 	// printf("\n*** size = %d, start = %d, a_index = %d ***\n", ints[S_SIZE], ints[S_START], a_index);
 	if (a_index == ints[S_SIZE] - 1)
 		return (0);
-	if (abs(a_index - ints[S_START]) > abs(ints[S_SIZE] - 1 - a_index))
-		return (ints[S_SIZE] - a_index - 1);
+	if (abs(a_index - ints[S_START]) >= abs(ints[S_SIZE] - 1 - a_index))
+		return (-(ints[S_SIZE] - a_index - 1));
 	else
-		return (ints[S_START] - a_index - 1);
+		return ((a_index - ints[S_START] + 1));
 	return (0);
 }
 
@@ -144,11 +164,35 @@ void	pull_b_to_top(int **arr, int ints[3], int i, int a_rot)
 
 	j = -1;
 	// printf("\n*** start = %d, i = %d, a_rot = %d ***\n", ints[S_START], i, a_rot);
-	while (++j < i - ints[S_START])
-	{
-		if (a_rot > 0 && j < a_rot)
-			rr(arr[ARR_A], arr[ARR_B], ints[S_START], ints[S_SIZE]);
-		else
-			rb(arr[ARR_B], ints[S_START], ints[S_SIZE]);
-	}
+	if (i > ints[S_START] / 2)
+		while (++j < ints[S_START] - i - 1)
+		{
+			if (a_rot > 0 && j < a_rot)
+				rr(arr[ARR_A], arr[ARR_B], ints[S_START], ints[S_SIZE]);
+			else
+				rb(arr[ARR_B], 0, ints[S_START]);
+		}
+	else
+		while (++j <= i)
+		{
+			if (a_rot < 0 && j < -a_rot)
+				rrr(arr[ARR_A], arr[ARR_B], ints[S_START], ints[S_SIZE]);
+			else
+				rrb(arr[ARR_B], 0, ints[S_START]);
+		}
+}
+
+int	get_a_position(int *a, int ints[3], int val)
+{
+	int	i;
+	int	range;
+
+	i = -1;
+	range = ints[S_SIZE] - ints[S_START];
+	while (++i < range)
+		if (a[i + ints[S_START]] == val)
+			break ;
+	if (i > range / 2)
+		return (-ints[S_SIZE] + i);
+	return (i);
 }
