@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void sort_b2(int *b, int size, int i)
+void	sort_b2(int *b, int size, int i)
 {
 	int	j;
 
@@ -30,9 +30,10 @@ void sort_b2(int *b, int size, int i)
 	}
 }
 
-int	get_moves_count_b2(int **arr, int ints[3], int val, int i)
+int	g_m_c_b2(int **arr, int ints[3], int val, int i)
 {
-	return (get_b_index_cmp(arr[ARR_B2], val, ints[S_START]) + (i / 2 + i % 2) - get_rr_rrr(i, val, arr[ARR_B2], ints[S_START]));
+	return (get_b_index_cmp(arr[ARR_B2], val, ints[S_START])
+		+ (i / 2 + i % 2) - get_rr_rrr(i, val, arr[ARR_B2], ints[S_START]));
 }
 
 void	pull_a2_to_top(int **arr, int ints[3], int i, int b_rot)

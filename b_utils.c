@@ -54,7 +54,7 @@ int	get_b_index_cmp(int *b, int val, int size)
 	return (0);
 }
 
-void sort_b(int *b, int size, int i)
+void	sort_b(int *b, int size, int i)
 {
 	int	j;
 
@@ -74,7 +74,8 @@ void sort_b(int *b, int size, int i)
 
 int	get_moves_count_b(int **arr, int ints[3], int val, int i)
 {
-	return (get_b_index_cmp(arr[ARR_B], val, ints[S_START]) + (i / 2 + i % 2) - get_rr_rrr(i, val, arr[ARR_B], ints[S_START]));
+	return (get_b_index_cmp(arr[ARR_B], val, ints[S_START])
+		+ (i / 2 + i % 2) - get_rr_rrr(i, val, arr[ARR_B], ints[S_START]));
 }
 
 int	get_elm(int **arr, int ints[3])
@@ -99,31 +100,38 @@ int	get_elm(int **arr, int ints[3])
 	i = 0;
 	while (++i < 2 * rows)
 	{
-		if (get_moves_total(arr, ints, tmp, i) < get_moves_total(arr, ints, tmp, max))
+		if (get_moves_t(arr, ints, tmp, i) < get_moves_t(arr, ints, tmp, max))
 			max = i;
 	}
 	free(tmp);
 	return (get_elm_index(ints, max));
 }
 
-int	get_elm_in_b(int **arr, int	ints[3], int ch_s, int ch_e)
+int	get_elm_in_b(int **arr, int ints[3], int ch_s, int ch_e)
 {
 	int	i;
 	int	max;
-	
+	int	max_moves;
+
 	i = ints[S_START] - 1;
 	max = -1;
 	while (++i < ints[S_SIZE] && max == -1)
 		if (arr[ARR_A][i] < ch_e && arr[ARR_A][i] >= ch_s)
 			max = i;
-	// printf("\n** max = %d, moves = %d\n", arr[ARR_A][max], get_b_moves(arr, ints, arr[ARR_A][max]));
+	max_moves = get_b_moves(arr, ints, arr[ARR_A][max]);
 	i--;
 	while (++i < ints[S_SIZE])
-	{	
+	{
 		if (arr[ARR_A][i] < ch_e && arr[ARR_A][i] >= ch_s)
-			if (get_b_moves(arr, ints, arr[ARR_A][i]) < get_b_moves(arr, ints, arr[ARR_A][max]))
+		{
+			if (get_b_moves(arr, ints, arr[ARR_A][i]) < max_moves)
+			{
 				max = i;
-		// printf("\ni = %d, moves = %d\n", arr[ARR_A][i], get_b_moves(arr, ints, arr[ARR_A][i]));
+				max_moves = get_b_moves(arr, ints, arr[ARR_A][max]);
+				if (max_moves < 2)
+					break ;
+			}
+		}
 	}
 	return (max);
 }
@@ -131,33 +139,16 @@ int	get_elm_in_b(int **arr, int	ints[3], int ch_s, int ch_e)
 int	get_b_moves(int **arr, int ints[3], int val)
 {
 	int	a_rot;
-	int b_rot;
 	int	ret;
 
-	b_rot = 0;
 	a_rot = get_a_position(arr[ARR_A], ints, val);
-	if (a_rot < 0 && b_rot < 0)
-	{
-		if (a_rot < b_rot)
-			return (-a_rot);
-		else
-			return (-b_rot);
-	}
-	
-	if (a_rot > 0 && b_rot > 0)
-	{
-		if (a_rot > b_rot)
-			return (a_rot);
-		else
-			return (b_rot);
-	}
-	ret = a_rot - b_rot;
+	ret = a_rot;
 	if (ret < 0)
 		ret = -1 * ret;
 	return (ret);
 }
 
-int get_rr_rrr(int max, int val, int *b, int start)
+int	get_rr_rrr(int max, int val, int *b, int start)
 {
 	int	j;
 	int	ret;
@@ -175,15 +166,13 @@ int get_rr_rrr(int max, int val, int *b, int start)
 				ret++;
 	}
 	else
-	{
 		if (tmp < 0)
-		while (++i < max / 2 + 1 && i < -tmp)
+			while (++i < max / 2 + 1 && i < -tmp)
 				ret++;
-	}
 	return (ret);
 }
 
-int return_b_r(int size, int i)
+int	return_b_r(int size, int i)
 {
 	if (size < 2 || i == 0 || size == i)
 		return (0);

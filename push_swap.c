@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 16:06:21 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/25 16:19:26 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/29 17:02:16 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,15 @@ void	do_3(int *a, int start)
 {
 	if (a[start] > a[start + 2])
 	{
-		ra(a, start, start + 3);
-		if (a[start] > a[start + 2])
+		if (a[start + 1] > a[start + 2])
+		{
+			if (a[start] > a[start + 1])
+			{
+				sa(a, start);
+				rra(a, start, start + 3);
+			}
+		}
+		else
 			ra(a, start, start + 3);
 	}
 	if (a[start] > a[start + 1])
@@ -35,41 +42,27 @@ void	do_3(int *a, int start)
 	}
 }
 
-void	do_rest(int	**arr, int ints[3])
+void	do_5(int **arr, int ints[3])
 {
 	int	i;
 	int	a_indx;
 	int	a_rot;
-	int	elm;
 
+	pb(arr, ints[S_START]);
+	ints[S_START]++;
+	pb(arr, ints[S_START]);
+	ints[S_START]++;
+	do_3(arr[ARR_A], ints[S_START]);
 	i = ints[S_START];
 	while (--i > -1)
 	{
-		elm = get_elm_in_a(arr, ints);
-
-		// printf("\n");
-		// print_a(arr[ARR_B], 0, ints[S_START]);
-		// printf("\n");
-		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
-
-		a_indx = get_a_index(arr[ARR_A], arr[ARR_B][elm], ints[S_START], ints[S_SIZE]);
+		a_indx = g_a_i(arr[ARR_A], arr[ARR_B][i], ints[S_START], ints[S_SIZE]);
 		a_rot = return_a_r(ints, a_indx);
-		// printf("\n*** size = %d, start = %d, a_rot = %d, elm = %d, a_index = %d ****\n", ints[S_SIZE], ints[S_START], a_rot, arr[ARR_B][elm], a_indx);
-		pull_b_to_top(arr, ints, elm, a_rot);
-
-		// printf("\n");
-		// print_a(arr[ARR_B], 0, ints[S_START]);
-		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
-		a_indx = get_a_index(arr[ARR_A], arr[ARR_B][ints[S_START] - 1], ints[S_START], ints[S_SIZE]);
-		a_rot = return_a_r(ints, a_indx);
-
-		// printf("\n*** size = %d, start = %d, a_rot = %d, elm = %d, a_index = %d ****\n", ints[S_SIZE], ints[S_START], a_rot, arr[ARR_B][elm], a_indx);
-
 		sort_a(arr[ARR_A], ints, a_rot);
 		pa(arr, ints[S_START] - 1);
 		ints[S_START]--;
-		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
 	}
+	finalize_a(arr[ARR_A], ints[S_SIZE]);
 }
 
 void	do_rest_2(int	**arr, int ints[3])
@@ -80,47 +73,58 @@ void	do_rest_2(int	**arr, int ints[3])
 	int	elm;
 
 	i = ints[S_START];
-	while (--i > ints[S_WEIGHT])
+	while (--i > -1)
 	{
-		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
-		elm = get_elm_in_a(arr, ints) + ints[S_START] - 1;
-		a_indx = get_a_index(arr[ARR_A], arr[ARR_A][elm], ints[S_START], ints[S_SIZE]);
+		elm = get_elm_in_a(arr, ints);
+		a_indx = g_a_i(arr[ARR_A], arr[ARR_B][elm], ints[S_START], ints[S_SIZE]);
 		a_rot = return_a_r(ints, a_indx);
-			// printf("\n*** size = %d, start = %d, a_rot = %d, elm = %d, a_index = %d ****\n", ints[S_SIZE], ints[S_START], a_rot, arr[ARR_B][elm], a_indx);
 		pull_b_to_top(arr, ints, elm, a_rot);
-		a_indx = get_a_index(arr[ARR_A], arr[ARR_A][ints[S_START] - 1], ints[S_START], ints[S_SIZE]);
+		a_indx = g_a_i(arr[ARR_A], arr[ARR_B][ints[S_START] - 1], ints[S_START], ints[S_SIZE]);
 		a_rot = return_a_r(ints, a_indx);
 		sort_a(arr[ARR_A], ints, a_rot);
-		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
+		pa(arr, ints[S_START] - 1);
+		ints[S_START]--;
+	}
+}
+
+void	do_rest(int	**arr, int ints[3])
+{
+	int	i;
+	int	a_indx;
+	int	a_rot;
+	int	elm;
+
+	i = ints[S_START];
+	while (--i > ints[S_WEIGHT])
+	{
+		elm = get_elm_in_a(arr, ints) + ints[S_START] - 1;
+		a_indx = g_a_i(arr[ARR_A], arr[ARR_A][elm], ints[S_START], ints[S_SIZE]);
+		a_rot = return_a_r(ints, a_indx);
+		pull_b_to_top(arr, ints, elm, a_rot);
+		a_indx = g_a_i(arr[ARR_A], arr[ARR_A][ints[S_START] - 1], ints[S_START], ints[S_SIZE]);
+		a_rot = return_a_r(ints, a_indx);
+		sort_a(arr[ARR_A], ints, a_rot);
 		ints[S_START]--;
 		pa(arr, ints[S_START]);
-		// pa(arr, ints[S_SIZE]);
-		// ints[S_START]--;
-		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
 	}
 	i++;
 	while (--i > -1)
 	{
-		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
-		// print_a(arr[ARR_B], 0, ints[S_START]);
-		a_indx = get_a_index(arr[ARR_A], arr[ARR_B][i], ints[S_START], ints[S_SIZE]);
+		a_indx = g_a_i(arr[ARR_A], arr[ARR_B][i], ints[S_START], ints[S_SIZE]);
 		a_rot = return_a_r(ints, a_indx);
-		// if (arr[ARR_B][i] == 2)
-			// printf("\n*** size = %d, start = %d, a_rot = %d, elm = %d, a_index = %d ****\n", ints[S_SIZE], ints[S_START], a_rot, arr[ARR_B][i], a_indx);
 		sort_a(arr[ARR_A], ints, a_rot);
 		ints[S_START]--;
 		pa(arr, ints[S_START]);
-		// print_a(arr[ARR_A], ints[S_START], ints[S_SIZE]);
 	}
 }
 
 void	do_more(int **arr, int ints[3])
 {
 	int	elm;
-	int b_indx;
+	int	b_indx;
 	int	b_rot;
 
-	while (ints[S_START] < ints[S_SIZE] * 0.84 - 3)
+	while (ints[S_START] < ints[S_SIZE] * 0.75 - 3)
 	{
 		elm = get_elm(arr, ints) + ints[S_START];
 		b_indx = get_b_index(arr[ARR_B], arr[ARR_A][elm], ints[S_START]);
@@ -140,12 +144,12 @@ void	do_more(int **arr, int ints[3])
 	finalize_a(arr[ARR_A], ints[S_SIZE]);
 }
 
-void do_more_2(int **arr, int ints[3])
+void	do_more_2(int **arr, int ints[3])
 {
 	int	i;
 	int	j;
-	int ch_s;
-	int ch_e;
+	int	ch_s;
+	int	ch_e;
 	int	elm;
 
 	ch_s = 0;
@@ -159,7 +163,7 @@ void do_more_2(int **arr, int ints[3])
 			elm = get_elm_in_b(arr, ints, ch_s, ch_e);
 			pull_a_to_top_simple(arr, ints, elm);
 			pb(arr, ints[S_START]);
-			ints[S_START]++; 
+			ints[S_START]++;
 		}
 		ch_s += ints[S_SIZE] / CHUNKS;
 		ch_e += ints[S_SIZE] / CHUNKS;
@@ -169,29 +173,60 @@ void do_more_2(int **arr, int ints[3])
 	while (++ints[S_START] < ints[S_SIZE] - 3)
 		pb(arr, ints[S_START]);
 	do_3(arr[ARR_A], ints[S_START]);
-	do_rest(arr, ints);
+	do_rest_2(arr, ints);
 	finalize_a(arr[ARR_A], ints[S_SIZE]);
 }
 
-void	push_swap(int *a, int size)
+int	**make_arrays(int *a, int size)
 {
 	int	*b;
 	int	*c;
 	int	*d;
+	int	**arr;
+
+	b = malloc(size * sizeof(int));
+	if (!b)
+		return (NULL);
+	c = malloc(size * sizeof(int));
+	if (!c)
+	{
+		free(b);
+		return (NULL);
+	}
+	d = malloc(size * sizeof(int));
+	if (!d)
+	{
+		free(b);
+		free(c);
+		return (NULL);
+	}
+	arr = malloc(4 * sizeof(char *));
+	arr[ARR_A] = a;
+	arr[ARR_B] = b;
+	arr[ARR_A2] = c;
+	arr[ARR_B2] = d;
+	return (arr);
+}
+
+void free_arrays(int **arr)
+{
+	free(arr[ARR_A]);
+	free(arr[ARR_A2]);
+	free(arr[ARR_B]);
+	free(arr[ARR_B2]);
+}
+
+void	push_swap(int *a, int size)
+{
 	int	ints[3];
 	int	**arr;
 	int	i;
 
 	ints[S_START] = 0;
 	ints[S_SIZE] = size;
-	b = malloc(size * sizeof(int));
-	c = malloc(size * sizeof(int));
-	d = malloc(size * sizeof(int));
-	arr = malloc(4 * sizeof(void(*)));
-	arr[ARR_A] = a;
-	arr[ARR_B] = b;
-	arr[ARR_A2] = c;
-	arr[ARR_B2] = d;
+	arr = make_arrays(a, size);
+	if (!arr)
+		return ;
 	i = -1;
 	while (++i < size)
 		arr[ARR_A2][i] = arr[ARR_A][i];
@@ -199,10 +234,13 @@ void	push_swap(int *a, int size)
 		do_2(arr[ARR_A], ints[S_START]);
 	else if (ints[S_SIZE] == 3)
 		do_3(arr[ARR_A], ints[S_START]);
+	else if (ints[S_SIZE] == 5)
+		do_5(arr, ints);
+	else if (ints[S_SIZE] < 201)
+		do_more(arr, ints);
 	else
 		do_more_2(arr, ints);
-	// printf("\n\n*****************************\n");
-	// print_a(arr[ARR_A], 0, ints[S_SIZE]);
+	free_arrays(arr);
 }
 
 int	*pre_order(int *a, int size)
