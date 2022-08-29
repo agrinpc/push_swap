@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:01:37 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/04/04 15:44:57 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/29 22:08:13 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <unistd.h>
 # include <stdarg.h>
 # include <stdio.h>
-#include <fcntl.h>
+# include <fcntl.h>
 
 typedef struct s_list
 {
@@ -97,7 +97,8 @@ char				get_type(char	*format);
 char				*get_sign_char(int n, char	*format);
 char				*get_hex_char(char *format, char *numbers);
 int					get_hex_size(unsigned long int a);
-char				*get_hex(unsigned long int a, int size, int is_big, int max);
+char				*get_hex(unsigned long int a, int size,
+						int is_big, int max);
 long int			get_abs(long num);
 int					print_string(char	*format, char *str);
 int					print_int(char *format, long int num);
@@ -107,7 +108,8 @@ int					print_char(char *format, char c);
 char				*return_number(long num, int max);
 char				*return_unumber(unsigned int num, int max);
 char				*get_next_line(int fd);
-char				*ft_gnl_strjoin(char *s1, char *s2, int size_s1, int size_s2);
+char				*ft_gnl_strjoin(char *s1, char *s2,
+						int size_s1, int size_s2);
 void				ft_strtcpy(char *dest, char *src, int ints[3], int mod);
 void				write_num(char *tmp, int num);
 int					read_num(char *tmp);

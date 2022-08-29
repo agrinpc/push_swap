@@ -6,7 +6,7 @@
 #    By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 16:29:12 by miahmadi          #+#    #+#              #
-#    Updated: 2022/08/29 18:04:04 by miahmadi         ###   ########.fr        #
+#    Updated: 2022/08/29 23:49:21 by miahmadi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,14 +23,33 @@ RM = rm -f
 
 FILES =	push_swap \
 		moves \
+		moves_2 \
+		fake_moves \
+		fake_moves_2 \
 		utils \
+		utils_2 \
+		utils_3 \
 		a_utils \
+		a_utils_1 \
 		b_utils \
+		b_utils_2 \
+		b_utils_3 \
+		b_utils_4 \
 		b2_utils \
+		free \
+		do_1 \
+		do_2 \
 		common_utils \
 		main \
 		
-FILES_B =	moves_bonus \
+FILES_B = moves_bonus \
+			moves_bonus_2 \
+			b_utils_2 \
+			b_utils_3 \
+			utils_2 \
+			utils_3 \
+			free \
+			push_swap_bonus \
 			bonus_main \
 
 SRCS_DIR = ./

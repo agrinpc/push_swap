@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   moves_bonus.c                                      :+:      :+:    :+:   */
+/*   fake_moves.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/14 16:38:24 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/29 23:20:20 by miahmadi         ###   ########.fr       */
+/*   Created: 2022/08/29 23:17:23 by miahmadi          #+#    #+#             */
+/*   Updated: 2022/08/29 23:18:19 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sa(int *a, int start)
+void	fsa(int *a, int start)
 {
 	int	tmp;
 
@@ -21,7 +21,7 @@ void	sa(int *a, int start)
 	a[start + 1] = tmp;
 }
 
-void	sb(int *b, int size)
+void	fsb(int *b, int size)
 {
 	int	tmp;
 
@@ -30,17 +30,17 @@ void	sb(int *b, int size)
 	b[size - 2] = tmp;
 }
 
-void	pb(int **arr, int start)
+void	fpb(int **arr, int start)
 {
-	arr[ARR_B][start] = arr[ARR_A][start];
+	arr[ARR_B2][start] = arr[ARR_A2][start];
 }
 
-void	pa(int **arr, int start)
+void	fpa(int **arr, int start)
 {
-	arr[ARR_A][start] = arr[ARR_B][start];
+	arr[ARR_A2][start] = arr[ARR_B2][start];
 }
 
-void	rra(int *a, int start, int size)
+void	frra(int *a, int start, int size)
 {
 	int	i;
 	int	tmp;
