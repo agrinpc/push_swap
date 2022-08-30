@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 23:04:05 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/29 23:08:47 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 16:54:19 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	get_moves_min_b(int **arr, int ints[3], int *tmp)
 
 	rows = get_rows(ints[S_SIZE] - ints[S_START]);
 	t2 = malloc(2 * sizeof(int) * rows);
+	if (!t2)
+		return (-1);
 	j = -1;
 	while (++j < rows)
 	{
@@ -32,6 +34,7 @@ int	get_moves_min_b(int **arr, int ints[3], int *tmp)
 	while (++j < 2 * rows)
 		if (g_m_c_b2(arr, ints, t2[j], j) < g_m_c_b2(arr, ints, tmp[min], min))
 			min = j;
+	free(t2);
 	return (min);
 }
 

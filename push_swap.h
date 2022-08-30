@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:38:44 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/29 23:48:07 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:03:59 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdlib.h>
 # include "./libft/libft.h"
 
+# define MAX_INT 2147483647;
+# define MIN_INT -2147483648;
 # define RAT 1
 # define S_START 0
 # define S_SIZE 1
@@ -55,8 +57,6 @@ void	frb(int *b, int start, int size);
 void	fra(int *a, int start, int size);
 void	frrb(int *b, int start, int size);
 void	frra(int *a, int start, int size);
-int		ft_atoi(const char *nptr);
-void	print_a(int *a, int start, int size);
 int		get_elm_index(int ints[3], int max);
 void	pull_a_to_top(int **arr, int ints[3], int i, int b_rot);
 void	pull_a2_to_top(int **arr, int ints[3], int i, int b_rot);
@@ -104,5 +104,12 @@ int		**free_b(int *a);
 int		**free_c(int *a, int *b);
 int		**free_d(int *a, int *b, int *c);
 int		**free_all(int *a, int *b, int *c, int *d);
+int		*free_arr(int *arr);
+void	free_numbers(char **numbers, int size);
+int		error(char *msg);
+int		check_if_number(char **argv, int size);
+int		*get_args_2(char **argv, int size);
+int		*get_args_1(char **argv, int size);
+int		is_integer(const char *nptr);
 
 #endif

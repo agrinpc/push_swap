@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 22:44:01 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/29 23:33:35 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 15:20:07 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,13 @@ char	**get_numbers(char *str)
 
 	i = -1;
 	while (str[++i])
-		if (str[i] != ' ' && (str[i] < '0' || str[i] > '9'))
+	{
+		if (str[i] != ' ' && str[i] != '-' && (str[i] < '0' || str[i] > '9'))
+		{
+			error("There is a non-digit value among arguments");
 			return (NULL);
+		}
+	}
 	numbers = ft_split(str, ' ');
 	return (numbers);
 }
@@ -65,25 +70,18 @@ char	**get_numbers(char *str)
 int	*get_args(char **argv, int size, int input)
 {
 	int		*res;
-	int		i;
-	char	**numbers;
 
 	if (input == 2)
 	{
-		numbers = get_numbers(argv[1]);
-		if (!numbers)
-			return (NULL);
-		res = malloc((size) * sizeof(int));
-		i = -1;
-		while (++i < size)
-			res[i] = ft_atoi(numbers[i]);
+		res = get_args_2(argv, size);
+		if (!res)
+			return (free_arr(res));
 	}
 	else
 	{
-		res = malloc((size) * sizeof(int));
-		i = -1;
-		while (++i < size)
-			res[i] = ft_atoi(argv[i + 1]);
+		res = get_args_1(argv, size);
+		if (!res)
+			return (free_arr(res));
 	}
 	return (res);
 }

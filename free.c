@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 23:36:26 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/29 23:48:00 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:02:53 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,11 @@ int	**free_all(int *a, int *b, int *c, int *d)
 	free(b);
 	free(c);
 	free(d);
+	return (NULL);
+}
+
+int	*free_arr(int *arr)
+{
+	free(arr);
 	return (NULL);
 }

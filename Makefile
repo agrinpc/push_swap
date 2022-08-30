@@ -6,7 +6,7 @@
 #    By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 16:29:12 by miahmadi          #+#    #+#              #
-#    Updated: 2022/08/29 23:49:21 by miahmadi         ###   ########.fr        #
+#    Updated: 2022/08/30 15:22:49 by miahmadi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ FILES =	push_swap \
 		utils \
 		utils_2 \
 		utils_3 \
+		utils_4 \
 		a_utils \
 		a_utils_1 \
 		b_utils \
@@ -46,8 +47,11 @@ FILES_B = moves_bonus \
 			moves_bonus_2 \
 			b_utils_2 \
 			b_utils_3 \
+			utils \
 			utils_2 \
 			utils_3 \
+			utils_3 \
+			utils_4 \
 			free \
 			push_swap_bonus \
 			bonus_main \
@@ -64,10 +68,10 @@ OBJS_B = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES_B)))
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(PROG): $(NAME)
-	$(CC) $(CFLAGS) -g $(NAME) -o $(PROG)
+	$(CC) $(NAME) -o $(PROG) $(CFLAGS) -g
 
 $(PROG_BONUS): $(NAME_BONUS)
-	$(CC) $(CFLAGS) -g $(NAME_BONUS) -o $(PROG_BONUS)
+	$(CC) $(NAME_BONUS) -o $(PROG_BONUS) $(CFLAGS) -g
 
 $(NAME): libftmake $(OBJS)
 	$(AR) $@ $(OBJS)

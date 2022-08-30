@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 22:47:39 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/30 00:50:00 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:17:03 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,14 @@ void	check_push_swap(int *a, int size)
 		check = do_check(str, arr, ints);
 		if (!check)
 		{
-			ft_printf("KO\n");
+			free(str);
+			error("None-instructional action");
 			return ;
 		}
+		free(str);
 		str = get_next_line(0);
 	}
+	free(str);
 	final_check(arr, ints);
 	free_arrays_bonus(arr);
 }

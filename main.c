@@ -6,13 +6,32 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 06:21:18 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/29 23:00:00 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:36:18 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	main(int argc, char *argv[])
+static int	pre_check(int *a, int size)
+{
+	int	i;
+
+	i = -1;
+	while (++i < size - 1)
+	{
+		if (a[i + 1] < a[i])
+			return (0);
+	}
+	return (1);
+}
+
+int	error(char *msg)
+{
+	ft_printf("Error: %s\n", msg);
+	return (0);
+}
+
+int	main(int argc, char **argv)
 {
 	int	*a;
 	int	size;
@@ -20,18 +39,21 @@ int	main(int argc, char *argv[])
 
 	input = check_input(argv, argc);
 	if (input == 0)
-		return (0);
+		return (error("Arguments combanition is wrong"));
 	else if (input == 1)
 		size = argc - 1;
 	else
 		size = has_space(argv[1]);
+	if (size < 2)
+		return (0);
 	a = get_args(argv, size, input);
 	if (a)
 	{
 		if (!validate_numbers(a, size))
-			return (0);
+			return (error("There is a duplicated value"));
 		a = pre_order(a, size);
-		push_swap(a, size);
+		if (!pre_check(a, size))
+			push_swap(a, size);
 	}
 	return (0);
 }

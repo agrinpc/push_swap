@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:41:30 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/06/14 18:19:26 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:04:44 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static int	ft_isspace(char c)
 	return (0);
 }
 
-int	ft_atoi(const char *nptr)
+int	is_integer(const char *nptr)
 {
-	int	sign;
-	int	output;
+	int		sign;
+	long	num;
 
 	sign = 1;
-	output = 0;
+	num = 0;
 	while (ft_isspace(*nptr))
 		nptr++;
 	if (*nptr == '-' || *nptr == '+')
@@ -38,20 +38,23 @@ int	ft_atoi(const char *nptr)
 	while (*nptr)
 	{
 		if (ft_isdigit(*nptr))
-			output = output * 10 + (*nptr - 48);
+			num = num * 10 + (*nptr - 48);
 		else
-			return (sign * output);
+			return (sign * num);
 		nptr++;
 	}
-	return (sign * output);
+	num = sign * num;
+	if (num > 2147483647 || num < -2147483648)
+		return (0);
+	return (1);
 }
 
-void	print_a(int *a, int start, int size)
+void	free_numbers(char **numbers, int size)
 {
 	int	i;
 
-	i = start - 1;
+	i = -1;
 	while (++i < size)
-		printf("%d\n", a[i]);
-	printf("*********************\n");
+		free(numbers[i]);
+	free(numbers);
 }

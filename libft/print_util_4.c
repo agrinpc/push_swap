@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:53:23 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/04/06 15:44:13 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 16:57:41 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,14 @@ char	*get_hex(unsigned long a, int size, int is_big, int max)
 	if (a == 0 && max == 0)
 	{
 		hex = malloc(0);
+		if (!hex)
+			return (NULL);
 		ft_strlcpy(hex, "", 0);
 		return (hex);
 	}
 	hex = malloc(size + 1);
+	if (!hex)
+		return (NULL);
 	hex[size] = '\0';
 	while (--size > -1)
 	{
@@ -69,12 +73,16 @@ char	*return_number(long num, int max)
 	if (num == -2147483648)
 	{
 		res = malloc(10);
+		if (!res)
+			return (NULL);
 		ft_strlcpy(res, "2147483648", 11);
 		return (res);
 	}
 	else if (num == 0 && max == 0)
 	{
 		res = malloc(0);
+		if (!res)
+			return (NULL);
 		ft_strlcpy(res, "", 0);
 		return (res);
 	}
@@ -88,6 +96,8 @@ char	*return_unumber(unsigned int num, int max)
 	if (num == 0 && max == 0)
 	{
 		res = malloc(0);
+		if (!res)
+			return (NULL);
 		ft_strlcpy(res, "", 0);
 		return (res);
 	}

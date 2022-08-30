@@ -6,15 +6,15 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 14:26:51 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/30 00:15:25 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:29:28 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	error(void)
+int	error(char *msg)
 {
-	ft_printf("Error\n");
+	ft_printf("Error: %s\n", msg);
 	return (0);
 }
 
@@ -26,20 +26,20 @@ int	main(int argc, char **argv)
 
 	input = check_input(argv, argc);
 	if (input == 0)
-		return (error());
+		return (error("Arguments combanition is wrong"));
 	else if (input == 1)
 		size = argc - 1;
 	else
 		size = has_space(argv[1]);
+	if (size < 1 || ft_strncmp(argv[1], "", 1) == 0)
+		return (0);
 	a = get_args(argv, size, input);
 	if (a)
 	{
 		if (!validate_numbers(a, size))
-			return (error());
+			return (error("There is a duplicated value"));
 		a = pre_order(a, size);
 		check_push_swap(a, size);
 	}
-	else
-		ft_printf("Error\n");
 	return (0);
 }

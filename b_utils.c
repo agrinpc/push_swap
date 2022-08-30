@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 13:34:43 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/29 22:38:09 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/08/30 16:54:06 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ int	get_elm(int **arr, int ints[3])
 	else
 		return (ints[S_SIZE] - ints[S_START] - 1);
 	tmp = malloc(2 * sizeof(int) * rows);
+	if (!tmp)
+		return (-1);
 	while (++i < rows)
 	{
 		tmp[i * 2] = arr[ARR_A][ints[S_START] + i];
@@ -99,10 +101,8 @@ int	get_elm(int **arr, int ints[3])
 	}
 	i = 0;
 	while (++i < 2 * rows)
-	{
 		if (get_moves_t(arr, ints, tmp, i) < get_moves_t(arr, ints, tmp, max))
 			max = i;
-	}
 	free(tmp);
 	return (get_elm_index(ints, max));
 }
