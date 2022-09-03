@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:41:30 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/30 17:04:44 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/09/03 12:11:08 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,17 @@ void	free_numbers(char **numbers, int size)
 	while (++i < size)
 		free(numbers[i]);
 	free(numbers);
+}
+
+int	has_space(char *str)
+{
+	int		i;
+	int		size;
+
+	i = -1;
+	size = 0;
+	while (str[++i])
+		if (str[i] == ' ')
+				size++;
+	return (size);
 }

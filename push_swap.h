@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:38:44 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/30 17:03:59 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:59:41 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,6 @@ int		check_if_number(char **argv, int size);
 int		*get_args_2(char **argv, int size);
 int		*get_args_1(char **argv, int size);
 int		is_integer(const char *nptr);
+int		check_if_digit(char *str);
 
 #endif

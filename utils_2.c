@@ -6,23 +6,67 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 22:44:01 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/30 15:20:07 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/09/03 12:20:33 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	has_space(char *str)
+int	count_args(char *str)
+{
+	int		i;
+	int		size;
+	char	last;
+
+	i = 0;
+	size = 0;
+	while (str[i] == ' ')
+		i++;
+	if (str[i])
+	{
+		last = str[i];
+		size++;
+		i++;
+	}
+	while (str[i])
+	{
+		if (str[i] == ' ')
+			if (last != ' ')
+				size++;
+		last = str[i];
+		i++;
+	}
+	if (str[i - 1] == ' ')
+		size--;
+	return (size);
+}
+
+int	check_if_digit(char *str)
 {
 	int	i;
-	int	size;
 
 	i = -1;
-	size = 1;
 	while (str[++i])
-		if (str[i] == ' ')
-			size++;
-	return (size);
+	{
+		if (str[i] != ' ' && (str[i] < '0' || str[i] > '9'))
+		{
+			if (str[i] == '-')
+			{
+				if (str[i - 1])
+				{
+					if (!str[i + 1])
+						return (error("Minus sign is used in a wong way"));
+					if (str[i - 1] != ' ')
+						return (error("Minus sign is used in a wong way"));
+					if (str[i + 1] < '0' || str[i + 1] > '9')
+						return (error("Minus sign is used in a wong way"));
+				}
+			}
+			else
+				return (error("There is a non-digit value among arguments"));
+		}
+	}
+	return (1);
 }
 
 int	*pre_order(int *a, int size)
@@ -49,30 +93,14 @@ int	*pre_order(int *a, int size)
 	return (c);
 }
 
-char	**get_numbers(char *str)
-{
-	int		i;
-	char	**numbers;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] != ' ' && str[i] != '-' && (str[i] < '0' || str[i] > '9'))
-		{
-			error("There is a non-digit value among arguments");
-			return (NULL);
-		}
-	}
-	numbers = ft_split(str, ' ');
-	return (numbers);
-}
-
 int	*get_args(char **argv, int size, int input)
 {
 	int		*res;
 
 	if (input == 2)
 	{
+		if (!check_if_digit(argv[1]))
+			return (0);
 		res = get_args_2(argv, size);
 		if (!res)
 			return (free_arr(res));
@@ -95,7 +123,7 @@ int	check_input(char **argv, int argc)
 	spc = 0;
 	while (++i < argc)
 	{
-		if (has_space(argv[i]) > 1)
+		if (has_space(argv[i]) > 0)
 		{
 			if (argc > 2)
 				return (0);

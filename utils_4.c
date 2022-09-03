@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 14:28:23 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/30 17:05:53 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/09/02 19:01:35 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,13 @@ int	check_if_number(char **argv, int size)
 	i = 0;
 	while (++i < size)
 	{
-		j = -1;
+		j = 0;
+		while (argv[i][j] == ' ')
+			j++;
+		j--;
 		while (argv[i][++j])
-		{
 			if ((argv[i][j] < '0' || argv[i][j] > '9') && argv[i][j] != '-')
-			{
-				error("There is a non-digit value among arguments");
-				return (0);
-			}
-		}
+				return (error("There is a non-digit value among arguments"));
 	}
 	return (1);
 }
@@ -42,7 +40,7 @@ int	*get_args_2(char **argv, int size)
 	res = malloc((size) * sizeof(int));
 	if (!res)
 		return (NULL);
-	numbers = get_numbers(argv[1]);
+	numbers = ft_split(argv[1], ' ');
 	i = -1;
 	if (!numbers)
 		return (free_arr(res));

@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 06:21:18 by miahmadi          #+#    #+#             */
-/*   Updated: 2022/08/30 17:36:18 by miahmadi         ###   ########.fr       */
+/*   Updated: 2022/09/03 12:21:41 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	main(int argc, char **argv)
 	else if (input == 1)
 		size = argc - 1;
 	else
-		size = has_space(argv[1]);
-	if (size < 2)
+		size = count_args(argv[1]);
+	if (size < 1 || ft_strncmp(argv[1], "", 1) == 0)
 		return (0);
 	a = get_args(argv, size, input);
 	if (a)
